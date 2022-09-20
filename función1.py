@@ -74,6 +74,7 @@ def pill_measuring(image):
               'ratio_D': ratio_sup, 'ratio_d': ratio_inf}
     # visualización de imágenes, se crea una copia de la imagen original rotada y se dibujan las cajas en ella para después guardar esta imagen
     img_copy = rotated.copy()
+    plt.rcParams['figure.dpi'] = 200
     ax = plt.gca()
     ax.axes.xaxis.set_ticks([]) #quita labels/ticks de la imagen ploteada
     ax.axes.yaxis.set_ticks([])
