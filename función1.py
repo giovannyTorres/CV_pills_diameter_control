@@ -17,12 +17,10 @@ def pill_measuring(image):
 
     Ejemplo:
         pill_measuring(A:/IoT Sellos/WIN_20220913_16_42_57_Pro.jpg)
-     A:\Funciones RP\dummy img\IoT Sellos\Muestras sellos\WIN_20220913_16_08_37_Pro.jpg
     Return:
         ratios(dict): Diccionario de las razones entre los diámetros exteriores e interiores (respectivamente) y el promedio de estos, las especificaciones indican que este valor debe rondar entre 30% y 70%.
     """
     # En caso de tener un path como image, esta parte del código extrae el nombre de la imagen para poder identificar la imagen de salida, en caso de que se remueva la parte del guardado de imágenes del código, esta parte tampoco es necesaria
-    #name = re.sub(r'[\]', '/', image)
     name = re.split(r'[\\,.,]', image)[-2]
     # Se carga la imagen en blanco y negro
     image = cv.imread(image, 0)
