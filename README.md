@@ -44,7 +44,7 @@ Argumentos:
 
 - image (numpy.ndarray): imagen de entrada en el formato de un arreglo de numpy
 
-*Ejemplo*
+*Ejemplo*:
  
 ```python
 	angulo = angle_rotation(imagen001)
@@ -85,7 +85,7 @@ Argumentos:
 
 - image (str): nombre (path) de la imagen de la capsula que se va a procesar, la imagen debe ser clara, con iluminación constante y con el menor ruido de fondo
 
-Ejemplo
+*Ejemplo*:
 ```python
         pill_measuring(A:/IoT Sellos/WIN_20220913_16_42_57_Pro.jpg)
 ```
