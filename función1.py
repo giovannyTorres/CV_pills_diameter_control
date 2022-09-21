@@ -1,10 +1,11 @@
-# %% importar paquetes
+
 import numpy as np
 import cv2 as cv
 import re
 import matplotlib.pyplot as plt
 import os
 import imutils
+import argparse
 
 def angle_rotation(image):
     """ Determina el angulo de rotación para una imagen, de forma que la capsula quede lo mas recta posible, en referencia a la orientación de la imagen absoluta
@@ -18,7 +19,7 @@ def angle_rotation(image):
     Returns:
         angle (float) = regresa el angulo en el que la imagen desea ser rotada 
     """
-    #imagen en escala de grises
+    # imagen en escala de grises
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # La imagen se pasa a binaria de tal modo que los mayores valores adoptan un valor a 0 (generalmente cerca de los bordes de los objetos en la imagen) y el resto toma un valor de 0
     mask = cv.adaptiveThreshold(
@@ -40,16 +41,17 @@ def angle_rotation(image):
         angle = -angle
     return angle
 
+
 def imagerotation(image, angle):
     """Rota la imagen de entrada a partir de un angulo especificado, corrigiendo los cortes que provoca la función por defecto de opencv y quitando el fondo que causa un mal funcionamiento en el algoritmo de detección de contornos
-    
+
     Args:
         image (numpy.ndarray): imagen original en el formato de un arreglo de numpy
         angle (float): angulo en el que se rotará la imagen
 
     Ejemplo:
         imagerotation(image001,45.0)
-    
+
     Return:
         rotated (numpy.ndarray): imagen rotada en el angulo especificado, sin cortes, en el formato de un arreglo de numpy arreglo
     """
@@ -66,15 +68,16 @@ def imagerotation(image, angle):
         c = max(cnts, key=cv.contourArea)
         mask = np.zeros(gray.shape, dtype="uint8")
         cv.drawContours(mask, [c], -1, 255, -1)
-        #Se calcula una caja que contenga a la capsula, se extrae la ROI (region of interest) y se aplica la mascara
+        # Se calcula una caja que contenga a la capsula, se extrae la ROI (region of interest) y se aplica la mascara
         (x, y, w, h) = cv.boundingRect(c)
         imageROI = image[y:y + h, x:x + w]
         maskROI = mask[y:y + h, x:x + w]
         imageROI = cv.bitwise_and(imageROI, imageROI,
                                   mask=maskROI)
-        #finalmente se rota la imagen en el angulo deseado
+        # finalmente se rota la imagen en el angulo deseado
         rotated = imutils.rotate_bound(imageROI, angle)
     return rotated
+
 
 def pill_measuring(image):
     """ A partir de los contornos de la píldora define cajas que contienen a los perímetros interior y exterior de la capsula, aproximándonos a elipses concéntricas determina la razón entre los diámetros mayores y los diámetros menores de cada perímetro
@@ -86,16 +89,16 @@ def pill_measuring(image):
         pill_measuring("A:/IoT Sellos/WIN_20220913_16_42_57_Pro.jpg")
 
     Return:
-        ratios(dict): Diccionario de las razones entre los diámetros exteriores e interiores (respectivamente) y el promedio de estos, las especificaciones indican que este valor debe rondar entre 30% y 70%
+        ratio_average (float): Promedio de de las razones entre los diámetros exteriores e interiores (respectivamente), las especificaciones indican que este valor debe rondar entre 30% y 70%
     """
     # En caso de tener un path como image, esta parte del código extrae el nombre de la imagen para poder identificar la imagen de salida, en caso de que se remueva la parte del guardado de imágenes del código, esta parte tampoco es necesaria
     name = re.split(r'[\\,.,/]', image)[-2]
     # Se carga la imagen
     image = cv.imread(image)
-    #Se define el angulo de rotación
+    # Se define el angulo de rotación
     angle = angle_rotation(image)
-    #Se rota la imagen el angulo especificado
-    rotated = imagerotation(image,angle)
+    # Se rota la imagen el angulo especificado
+    rotated = imagerotation(image, angle)
     # Con el Canny edge detector de opencv se detectan todos los bordes de la imagen rotada dependiendo de los limites especificados, a través de los dos operadores morfologicos, dilate y erode se afinan estos contornos para cerrar algunos que estén abiertos y  remover  ruido.
     rotated_gray = cv.cvtColor(rotated, cv.COLOR_BGR2GRAY)
     edged = cv.Canny(rotated_gray, 50, 120)
@@ -140,6 +143,20 @@ def pill_measuring(image):
     # path donde se guarda la imagen de salida
     plt.savefig(os.path.join("..", "Funciones RP",
                 "img_output", f"{name}_output.png"))
+    cv.imshow("Cápsula dimensionada", img_copy)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
 
-    return ratios['ratio_average']
-# %%
+    return ratios
+
+def main():
+    '''Método de entrada de la imagen para la ejecución del script
+    '''
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-i", "--image", required=True,
+                    help="path to the input image")
+    args = vars(ap.parse_args())
+    pill_measuring(args["image"])
+    
+if __name__ == "__main__":
+    main()
