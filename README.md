@@ -87,7 +87,7 @@ Argumentos:
 
 *Ejemplo*:
 ```python
-        pill_measuring(A:/IoT Sellos/WIN_20220913_16_42_57_Pro.jpg)
+        pill_measuring("A:/IoT Sellos/WIN_20220913_16_42_57_Pro.jpg")
 ```
 Return:
 

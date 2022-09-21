@@ -50,8 +50,8 @@ def imagerotation(image, angle):
     Ejemplo:
         imagerotation(image001,45.0)
     
-    Return
-        Rotated (numpy.ndarray): imagen rotada en el angulo especificado, sin cortes, en el formato de un arreglo de numpy arreglo
+    Return:
+        rotated (numpy.ndarray): imagen rotada en el angulo especificado, sin cortes, en el formato de un arreglo de numpy arreglo
     """
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # La imagen se pasa a binaria de tal modo que los mayores valores adoptan un valor a 0 (generalmente cerca de los bordes de los objetos en la imagen) y el resto toma un valor de 0
@@ -83,7 +83,7 @@ def pill_measuring(image):
         image (str): nombre (path) de la imagen de la capsula que se va a procesar, la imagen debe ser clara, con iluminación constante y con el menor ruido de fondo
 
     Ejemplo:
-        pill_measuring(A:/IoT Sellos/WIN_20220913_16_42_57_Pro.jpg)
+        pill_measuring("A:/IoT Sellos/WIN_20220913_16_42_57_Pro.jpg")
 
     Return:
         ratios(dict): Diccionario de las razones entre los diámetros exteriores e interiores (respectivamente) y el promedio de estos, las especificaciones indican que este valor debe rondar entre 30% y 70%
