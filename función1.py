@@ -1,4 +1,3 @@
-
 import numpy as np
 import cv2 as cv
 import re
@@ -6,9 +5,9 @@ import matplotlib.pyplot as plt
 import os
 import imutils
 import argparse
-
+from función3 import pop_capsules_table
 def angle_rotation(image):
-    """ Determina el angulo de rotación para una imagen, de forma que la capsula quede lo mas recta posible, en referencia a la orientación de la imagen absoluta
+    """ Determina el angulo de rotación para una imagen, de forma que la capsula quede lo mas recta posible, en referencia a la orientación de la imagen absoluta.
 
     Args: 
         image (numpy.ndarray): imagen de entrada en el formato de un arreglo de numpy
@@ -43,7 +42,7 @@ def angle_rotation(image):
 
 
 def imagerotation(image, angle):
-    """Rota la imagen de entrada a partir de un angulo especificado, corrigiendo los cortes que provoca la función por defecto de opencv y quitando el fondo que causa un mal funcionamiento en el algoritmo de detección de contornos
+    """Rota la imagen de entrada a partir de un angulo especificado, corrigiendo los cortes que provoca la función por defecto de opencv y quitando el fondo que causa un mal funcionamiento en el algoritmo de detección de contornos.
 
     Args:
         image (numpy.ndarray): imagen original en el formato de un arreglo de numpy
@@ -146,9 +145,17 @@ def pill_measuring(image):
     cv.imshow("Cápsula dimensionada", img_copy)
     cv.waitKey(0)
     cv.destroyAllWindows()
+    print(ratio_avg)
 
     return ratios
 
+def check_parameter(ratios):
+    parameter = False
+    if (ratios['ratio_average'] > 0.3) and (ratios['ratio_average'] < 0.7):
+        parameter = True
+    print(parameter)
+    return parameter
+    
 def main():
     '''Método de entrada de la imagen para la ejecución del script
     '''
@@ -156,7 +163,9 @@ def main():
     ap.add_argument("-i", "--image", required=True,
                     help="path to the input image")
     args = vars(ap.parse_args())
-    pill_measuring(args["image"])
-    
+    ratios = pill_measuring(args["image"])
+    parameter = check_parameter(ratios) 
+    pop_capsules_table(ratios,parameter)
+
 if __name__ == "__main__":
     main()
