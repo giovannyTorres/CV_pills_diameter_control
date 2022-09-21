@@ -8,7 +8,7 @@ Se divide en tres partes fundamentales que se concentran en la función "pill_me
 
 1. Carga de la imagen.
 2. Preprocesado de la imagen. Aproximación de la capsula a una elipse limpia. Se necesita aproximar 
-la capsula a una elipse para poder determinar ciertas variables posteiormente.  
+la capsula a una elipse para poder determinar su angulo de rotación.  
 3. Rotación de la imágen. Este paso es necesario ya que la orientación de la capsula varia entre 
 imágenes, y se requiere medir puntos equivalentes de cada perimetro de las elipses aproximadas
 para una mejor precisión y la rotación de la capsula facilita este proceso. 
