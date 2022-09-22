@@ -150,6 +150,14 @@ def pill_measuring(image):
     return ratios
 
 def check_parameter(ratios):
+    '''Se corrobora que la razón cumpla con los límites establecidos
+
+        Args:
+            ratios (dict): diccionario de donde se toma el ratio average
+
+        Return:
+            parameter (boolean): variable que nos dice si se cumple o no el parámetro. 
+    '''
     parameter = False
     if (ratios['ratio_average'] > 0.3) and (ratios['ratio_average'] < 0.7):
         parameter = True
@@ -157,7 +165,7 @@ def check_parameter(ratios):
     return parameter
     
 def main():
-    '''Método de entrada de la imagen para la ejecución del script
+    '''Método de entrada de la imagen para la ejecución del script y guardado de datos en la BD     
     '''
     ap = argparse.ArgumentParser()
     ap.add_argument("-i", "--image", required=True,
